@@ -21,13 +21,15 @@ export class AuthService {
       user.password = bcryptAdapter.hash(registerUserDto.password);
 
       await user.save();
-      //TODO: JWT para mantener la autenticacion del usuario
-
-      //TODO: enviar email de validacion
 
       const { password, ...rest } = UserEntity.fromObject(user);
 
-      return { user: rest, token: "JWT" };
+      const token = await JwtAdapter.generateToken({
+        id: rest.id,
+      });
+      if (!token) throw CustomError.internalServer("Error generating token");
+
+      return { user: rest, token };
     } catch (error) {
       throw CustomError.internalServer(`${error}`);
     }

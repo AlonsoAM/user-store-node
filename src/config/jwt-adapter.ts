@@ -16,5 +16,7 @@ export class JwtAdapter {
     });
   }
 
-  static validatetoken(token: string) {}
+  static validatetoken(token: string) {
+    throw new Error("Method not implemented.");
+  }
 }
