@@ -22,7 +22,7 @@ export class CategoryController{
         const [error, createCategoryDto] = CreateCategoryDto.create(req.body);
         try {
             if (error) return res.status(400).json({ error });
-            res.json({ message: createCategoryDto });
+            res.json({ message: req.body });
         } catch (error) {
             this.handledError(error, res);
         }
