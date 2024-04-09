@@ -1,19 +1,23 @@
 import {Response, Request} from "express";
 import {CreateCategoryDto, CustomError} from "../../domain";
+import {CategoryService} from "../services/category.service";
 
-export class CategoryController{
-    constructor() {
+export class CategoryController {
+    constructor(private readonly categoryService: CategoryService) {
     }
+
     private handledError = (error: unknown, res: Response) => {
         if (error instanceof CustomError) {
-            return res.status(error.statusCode).json({ error: error.message });
+            return res.status(error.statusCode).json({error: error.message});
         }
         console.log(`${error}`);
-        return res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({error: "Internal Server Error"});
     };
     public getCategories = async (req: Request, res: Response) => {
         try {
-            res.json({ message: "Categories" });
+            this.categoryService.getCategories()
+                .then(categories => res.status(200).json(categories))
+                .catch(error => this.handledError(error, res));
         } catch (error) {
             this.handledError(error, res);
         }
@@ -21,8 +25,10 @@ export class CategoryController{
     public createCategory = async (req: Request, res: Response) => {
         const [error, createCategoryDto] = CreateCategoryDto.create(req.body);
         try {
-            if (error) return res.status(400).json({ error });
-            res.json({ message: req.body });
+            if (error) return res.status(400).json({error});
+            this.categoryService.createCategory(createCategoryDto!, req.body.user)
+                .then(category => res.status(201).json(category))
+                .catch(error => this.handledError(error, res));
         } catch (error) {
             this.handledError(error, res);
         }
