@@ -18,7 +18,7 @@ export class CategoryController {
         const [error, paginationDto] = PaginationDto.create(+page, +limit);
         try {
 
-            if(error) return res.status(400).json({error});
+            if (error) return res.status(400).json({error});
 
             this.categoryService.getCategories(paginationDto!)
                 .then(categories => res.status(200).json(categories))

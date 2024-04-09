@@ -22,8 +22,6 @@ export class AuthMiddleware {
             const user = await UserModel.findById(payload.id);
             if (!user) return res.status(401).json({error: "User not found"});
 
-            // TODO: Validar si el usuario está activo
-
             req.body.user = UserEntity.fromObject(user);
 
             next();
