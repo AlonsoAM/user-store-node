@@ -15,8 +15,14 @@ const CategorySchema = new mongoose.Schema({
         ref: "User",
         required: [true, "User is required"],
     },
+});
 
-
+CategorySchema.set("toJSON", {
+    virtuals: true,
+    versionKey: false,
+    transform: function (_, ret) {
+        delete ret._id;
+    }
 });
 
 export const CategoryModel = mongoose.model("Category", CategorySchema);
