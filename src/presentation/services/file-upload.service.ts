@@ -37,8 +37,13 @@ export class FileUploadService {
 
     }
 
-    public uploadMultipleFiles = async (file: UploadedFile[], folder: string = 'uploads', validExtensions: string[] = ['png', 'jpg', 'jpeg', 'gif']) => {
-        throw new Error("Method not implemented.");
+    public uploadMultipleFiles = async (files: UploadedFile[], folder: string = 'uploads', validExtensions: string[] = ['png', 'jpg', 'jpeg', 'gif']) => {
+        try {
+            const uploadedFiles = files.map(async f => await this.uploadFile(f, folder, validExtensions));
+            return Promise.all(uploadedFiles);
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
