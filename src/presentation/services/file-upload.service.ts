@@ -21,7 +21,7 @@ export class FileUploadService {
         try {
             const fileExtension = file.mimetype.split('/').at(1) ?? '';
 
-            if(!validExtensions.includes(fileExtension)) {
+            if (!validExtensions.includes(fileExtension)) {
                 throw CustomError.badRequest(`Invalid file extension ${fileExtension}, valid ones are ${validExtensions.join(', ')}`);
             }
 
