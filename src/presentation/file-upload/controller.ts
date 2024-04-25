@@ -24,7 +24,7 @@ export class FileUploadController{
 
         const file = req.files.file as UploadedFile;
         this.fileUploadService.uploadFile(file)
-            .then(uploaded => res.json({message: "File uploaded successfully"}))
+            .then(uploaded => res.status(200).json(uploaded))
             .catch(error => this.handledError(error, res))
 
     }
